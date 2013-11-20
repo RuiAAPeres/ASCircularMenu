@@ -14,8 +14,6 @@
 		406B432918325FF0005648C1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 406B432718325FF0005648C1 /* InfoPlist.strings */; };
 		406B432B18325FF0005648C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 406B432A18325FF0005648C1 /* main.m */; };
 		406B432F18325FF0005648C1 /* ASAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 406B432E18325FF0005648C1 /* ASAppDelegate.m */; };
-		406B435918326086005648C1 /* ASMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 406B435718326086005648C1 /* ASMainViewController.m */; };
-		406B435A18326086005648C1 /* ASMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 406B435818326086005648C1 /* ASMainViewController.xib */; };
 		406B4361183262E9005648C1 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 406B435D183262E9005648C1 /* 1.jpg */; };
 		406B4362183262E9005648C1 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 406B435E183262E9005648C1 /* 2.jpg */; };
 		406B4363183262E9005648C1 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 406B435F183262E9005648C1 /* 3.jpg */; };
@@ -26,6 +24,8 @@
 		406B4377183267DB005648C1 /* main-menu-close-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 406B4373183267DB005648C1 /* main-menu-close-button@2x.png */; };
 		406B4378183267DB005648C1 /* main-menu-closed.png in Resources */ = {isa = PBXBuildFile; fileRef = 406B4374183267DB005648C1 /* main-menu-closed.png */; };
 		406B4379183267DB005648C1 /* main-menu-closed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 406B4375183267DB005648C1 /* main-menu-closed@2x.png */; };
+		40993BB8183C36FD00C6FD7D /* ASRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40993BB6183C36FD00C6FD7D /* ASRootViewController.m */; };
+		40993BB9183C36FD00C6FD7D /* ASRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40993BB7183C36FD00C6FD7D /* ASRootViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,9 +40,6 @@
 		406B432C18325FF0005648C1 /* ASCircularMenuDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ASCircularMenuDemo-Prefix.pch"; sourceTree = "<group>"; };
 		406B432D18325FF0005648C1 /* ASAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ASAppDelegate.h; sourceTree = "<group>"; };
 		406B432E18325FF0005648C1 /* ASAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASAppDelegate.m; sourceTree = "<group>"; };
-		406B435618326086005648C1 /* ASMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASMainViewController.h; sourceTree = "<group>"; };
-		406B435718326086005648C1 /* ASMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASMainViewController.m; sourceTree = "<group>"; };
-		406B435818326086005648C1 /* ASMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ASMainViewController.xib; sourceTree = "<group>"; };
 		406B435D183262E9005648C1 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		406B435E183262E9005648C1 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		406B435F183262E9005648C1 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
@@ -55,6 +52,9 @@
 		406B4373183267DB005648C1 /* main-menu-close-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-menu-close-button@2x.png"; sourceTree = "<group>"; };
 		406B4374183267DB005648C1 /* main-menu-closed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-menu-closed.png"; sourceTree = "<group>"; };
 		406B4375183267DB005648C1 /* main-menu-closed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "main-menu-closed@2x.png"; sourceTree = "<group>"; };
+		40993BB5183C36FD00C6FD7D /* ASRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASRootViewController.h; sourceTree = "<group>"; };
+		40993BB6183C36FD00C6FD7D /* ASRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASRootViewController.m; sourceTree = "<group>"; };
+		40993BB7183C36FD00C6FD7D /* ASRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ASRootViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,11 +106,11 @@
 				406B436A1832660D005648C1 /* ASCircularMenu */,
 				406B432D18325FF0005648C1 /* ASAppDelegate.h */,
 				406B432E18325FF0005648C1 /* ASAppDelegate.m */,
-				406B435618326086005648C1 /* ASMainViewController.h */,
-				406B435718326086005648C1 /* ASMainViewController.m */,
-				406B435818326086005648C1 /* ASMainViewController.xib */,
 				406B435B183262E9005648C1 /* Resources */,
 				406B432518325FF0005648C1 /* Supporting Files */,
+				40993BB5183C36FD00C6FD7D /* ASRootViewController.h */,
+				40993BB6183C36FD00C6FD7D /* ASRootViewController.m */,
+				40993BB7183C36FD00C6FD7D /* ASRootViewController.xib */,
 			);
 			path = ASCircularMenuDemo;
 			sourceTree = "<group>";
@@ -235,7 +235,7 @@
 				406B4377183267DB005648C1 /* main-menu-close-button@2x.png in Resources */,
 				406B4362183262E9005648C1 /* 2.jpg in Resources */,
 				406B4379183267DB005648C1 /* main-menu-closed@2x.png in Resources */,
-				406B435A18326086005648C1 /* ASMainViewController.xib in Resources */,
+				40993BB9183C36FD00C6FD7D /* ASRootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,8 +248,8 @@
 			files = (
 				406B432F18325FF0005648C1 /* ASAppDelegate.m in Sources */,
 				406B436F18326620005648C1 /* ASCircularMenu.m in Sources */,
+				40993BB8183C36FD00C6FD7D /* ASRootViewController.m in Sources */,
 				406B437018326620005648C1 /* ASCircularOverlayView.m in Sources */,
-				406B435918326086005648C1 /* ASMainViewController.m in Sources */,
 				406B432B18325FF0005648C1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

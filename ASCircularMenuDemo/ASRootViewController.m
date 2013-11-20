@@ -1,46 +1,39 @@
 //
-//  ASMainViewController.m
+//  ASRootViewController.m
 //  ASCircularMenuDemo
 //
-//  Created by André Silva on 12/11/13.
+//  Created by André Silva on 20/11/13.
 //  Copyright (c) 2013 AFMS. All rights reserved.
 //
 
-#import "ASMainViewController.h"
+#import "ASRootViewController.h"
 
-@interface ASMainViewController ()
+@interface ASRootViewController ()
 
 @end
 
-@implementation ASMainViewController
-
+@implementation ASRootViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = @"ASCircularMenuDemo";
-    
-    _menu = [[ASCircularMenu alloc]init];
-    _menu.delegate = self;
-    [_menu reloadButtons];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [_menu hideMenu:NO];
-    [_menu performSelector:@selector(showMenu:) withObject:[NSNumber numberWithBool:YES] afterDelay:2.0];
+    // init here because we need the window
+    if (!_menu) {
+        _menu = [[ASCircularMenu alloc]init];
+        _menu.delegate = self;
+        [_menu reloadButtons];
+    }
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-}
-
 
 #pragma mark - Circular Menu delegate
 
 -(NSInteger)numberOfItemsInCircularMenu {
-    return 6;
+    return _stepper.value;
 }
 
 -(UIButton *)circularMenu:(ASCircularMenu *)circularMenu buttonForMenuItemAtIndex:(NSInteger)index {
@@ -54,6 +47,18 @@
 -(void)circularMenu:(ASCircularMenu *)circularMenu didSelectMenuItemAtIndex:(NSInteger)index {
     NSLog(@"Menu item %ld",(long)index+1);
     [_menu closeMenu:YES];
+}
+
+- (IBAction)switchValueChanged:(UISwitch *)sender {
+    if (sender.isOn) {
+        [_menu showMenu:YES];
+    }else {
+        [_menu hideMenu:YES];
+    }
+}
+
+- (IBAction)stepperValueChanged:(UIStepper *)sender {
+    [_menu reloadButtons];
 }
 
 @end

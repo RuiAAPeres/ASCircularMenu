@@ -16,8 +16,6 @@
 #define kMenuButtonsWidth 35.0
 #define kMenuArc 180
 
-@class FXBlurView;
-
 @interface ASCircularMenu () {
     BOOL isAnimating;
 }
@@ -38,8 +36,7 @@
 @implementation ASCircularMenu
 
 -(id)init {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         [self initialize];
     }
     return self;
@@ -47,8 +44,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    if ((self = [super initWithCoder:aDecoder]))
-    {
+    if ((self = [super initWithCoder:aDecoder])) {
         [self initialize];
         [self didMoveToWindow];
     }
@@ -57,93 +53,86 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-    if ((self = [super initWithFrame:frame]))
-    {
+    if ((self = [super initWithFrame:frame])) {
         [self initialize];
     }
     return self;
 }
 
--(void)initialize {
+- (void)initialize {
     
-        // get the app window so we can acess it faster
+    // get the app window so we can acess it faster
     _appWindow = [[UIApplication sharedApplication] keyWindow];
     NSAssert(_appWindow!=nil, @"Can only be inited after makeKeyAndVisible because it needs the app window");
     
     self.frame = _appWindow.bounds;
     
-        // init the main button
+    // init the main button
     _mainButton = [[UIButton alloc]init];
     [_mainButton setImage:[UIImage imageNamed:@"main-menu-close-button"] forState:UIControlStateSelected];
     [_mainButton setImage:[UIImage imageNamed:@"main-menu-closed"] forState:UIControlStateNormal];
     [_mainButton addTarget:self action:@selector(mainButtonTouched) forControlEvents:UIControlEventTouchUpInside];
-        // set it with visible frame
+    // set it with visible frame
     _mainButton.frame = [self visibleMainButtonFrame];
+    _isMenuVisible = YES;
     
     
-        // init the blocker view
-        // https://github.com/nicklockwood/FXBlurView
-        // if FXBlurView exists in target use that to create our blocker view, otherwise create a simple view.
-    
-        // simple blocker view
+    // simple blocker view
     _blockerView = [[UIView alloc]initWithFrame:self.bounds];
     _blockerView.hidden = YES;
     _blockerView.backgroundColor = [UIColor blackColor];
     
-        // init the circular overlay container
+    // init the circular overlay container
     _overlaysContainer = [[UIView alloc]initWithFrame:CGRectMake((_appWindow.bounds.size.width/2)-(kBigCircularOverlayWidth/2),
                                                                  _appWindow.bounds.size.height-kBottomMargin-(kBigCircularOverlayWidth/2)-kMainButtonSize/2,
                                                                  kBigCircularOverlayWidth,
                                                                  kBigCircularOverlayWidth)];
     
-    CGRect smallFrame = CGRectMake((kBigCircularOverlayWidth/2.0)-(kSmallCircularOverlayWidth/2.0),
-                                   (kBigCircularOverlayWidth/2.0)-(kSmallCircularOverlayWidth/2.0),
+    CGRect smallFrame = CGRectMake((kBigCircularOverlayWidth/2)-(kSmallCircularOverlayWidth/2),
+                                   (kBigCircularOverlayWidth/2)-(kSmallCircularOverlayWidth/2),
                                    kSmallCircularOverlayWidth,
                                    kSmallCircularOverlayWidth);
     
-        // small cicular Overlay
+    // small cicular Overlay
     ASCircularOverlayView *smallOverlay = [[ASCircularOverlayView alloc]initWithFrame:smallFrame];
     smallOverlay.alpha = 0.8;
     [_overlaysContainer addSubview:smallOverlay];
-        //big circular Overlay
+    //big circular Overlay
     ASCircularOverlayView *bigOverlay = [[ASCircularOverlayView alloc]initWithFrame:_overlaysContainer.bounds];
     bigOverlay.alpha = 0.7;
     [_overlaysContainer addSubview:bigOverlay];
     
     [self addSubview:_overlaysContainer];
     
-    [self reloadButtons];
-    
     [self closeMenu:NO];
     
-        // add the main button to menu
+    // add the main button to menu
     [self addSubview:_mainButton];
-        // add the menu to the window
+    // add the menu to the window
     [_appWindow addSubview:self];
 }
 
--(void)reloadButtons {
+- (void)reloadButtons {
     
-        // without delegate we can't do anything here
+    // without delegate we can't do anything here
     if (!_delegate) return;
     
-        // lazy init the array
+    // lazy init the array
     if (!_buttons) {
         self.buttons = [NSMutableArray arrayWithCapacity:1];
     }
     
-        // remove the actual buttons
+    // remove the actual buttons
     [_buttons makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_buttons removeAllObjects];
     
     NSInteger numberOfItems = 0;
     if ([_delegate respondsToSelector:@selector(numberOfItemsInCircularMenu)]) {
         numberOfItems = [_delegate numberOfItemsInCircularMenu];
-        
     }else {
-            //  NSAssert(0, @"Implement delegate methods!");
+        //  NSAssert(0, @"Implement delegate methods!");
     }
-        // NSAssert(numberOfItems==0||numberOfItems>6, @"Menu needs to have at least one item and less than 6!");
+    // NSAssert(numberOfItems==0||numberOfItems>6, @"Menu needs to have at least one item and less than 6!");
     
     if ([_delegate respondsToSelector:@selector(circularMenu:buttonForMenuItemAtIndex:)]) {
         for (int i=0 ; i<numberOfItems ; i++) {
@@ -160,18 +149,16 @@
     
 	NSInteger itemCount = _buttons.count;
     if (itemCount == 0) {
-            //without any items to display there's nothing todo
+        //without any items to display there's nothing todo
 		return;
 	}
-    
-    NSLog(@"%f",((kBigCircularOverlayWidth-kSmallCircularOverlayWidth)/2));
     
 	int radius = (kBigCircularOverlayWidth/2) - 28; // radius of the circle
     
     int start = kMenuArc;
     float angle;
     
-        // diferente algoritm for less than 4 buttons because we don't need the full circunference
+    // diferente algoritm for less than 4 buttons because we don't need the full circunference
     if (itemCount <= 3) {
         start = kMenuArc + (kMenuArc/(itemCount*2));
         angle = kMenuArc/(itemCount);
@@ -179,9 +166,9 @@
         angle = kMenuArc/(itemCount-1);
     }
     
-    
-	int centerX = _mainButton.center.x;
-	int centerY = _mainButton.center.y;
+    CGRect mainButtonVisibleFrame =  [self visibleMainButtonFrame];
+	int centerX = mainButtonVisibleFrame.origin.x + mainButtonVisibleFrame.size.width/2;
+	int centerY = mainButtonVisibleFrame.origin.y + mainButtonVisibleFrame.size.height/2;
 	
     
 	int currentItem = 1;
@@ -218,45 +205,59 @@
 	}
 }
 
--(CGRect)visibleMainButtonFrame {
+- (CGRect)visibleMainButtonFrame {
     
-        // portrait
+    // portrait
     return CGRectMake((_appWindow.bounds.size.width/2)-(kMainButtonSize/2),
                       _appWindow.bounds.size.height-kBottomMargin-kMainButtonSize,
                       kMainButtonSize,
                       kMainButtonSize);
 }
 
--(CGRect)hidenMainButtonFrame {
+- (CGRect)hidenMainButtonFrame {
     
-        // portrait
+    // portrait
     return CGRectMake((_appWindow.bounds.size.width/2)-(kMainButtonSize/2),
                       _appWindow.bounds.size.height+kBottomMargin,
                       kMainButtonSize,
                       kMainButtonSize);
 }
 
--(void)showMenu:(BOOL)animated {
+- (void)showMenu:(BOOL)animated {
     if (animated) {
         [UIView animateWithDuration:kOpenAnimationTime animations:^{
             _mainButton.frame = [self visibleMainButtonFrame];
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            _isMenuVisible = YES;
+        }];
     }else {
         _mainButton.frame = [self visibleMainButtonFrame];
+        _isMenuVisible = YES;
     }
 }
 
--(void)hideMenu:(BOOL)animated {
+- (void)hideMenu:(BOOL)animated {
+    
+    if (isAnimating) {
+        return;
+    }
+    
+    [self closeMenu:animated];
     if (animated) {
+        isAnimating = YES;
         [UIView animateWithDuration:kCloseAnimationTime animations:^{
             _mainButton.frame = [self hidenMainButtonFrame];
-        } completion:nil];
+        } completion:^(BOOL finished) {
+            _isMenuVisible = NO;
+            isAnimating = NO;
+        }];
     }else {
         _mainButton.frame = [self hidenMainButtonFrame];
+        _isMenuVisible = NO;
     }
 }
 
--(void)fadeInMenuButtonItem:(UIButton*)menuItem {
+- (void)fadeInMenuButtonItem:(UIButton*)menuItem {
     [UIView animateWithDuration:0.2 animations:^{
         menuItem.hidden = NO;
         [menuItem setAlpha:1.0];
@@ -264,9 +265,16 @@
     }];
 }
 
--(void)openMenu:(BOOL)animated {
+- (void)openMenu:(BOOL)animated {
+    
+    if (isAnimating) {
+        return;
+    }
+    // cancel previous animations
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
     _isMenuOpen = YES;
-        // insert the blockerview
+    // insert the blockerview
     _blockerView.alpha = 0.0;
     _blockerView.hidden = NO;
     [self insertSubview:_blockerView belowSubview:_overlaysContainer];
@@ -278,7 +286,7 @@
             _blockerView.alpha = 0.20;
         } completion:^(BOOL finished) {
             
-                // now animate the buttons in
+            // now animate the buttons in
             float delay = 0.0;
             for (UIButton *btn in _buttons) {
                 [self performSelector:@selector(fadeInMenuButtonItem:) withObject:btn afterDelay:delay];
@@ -293,11 +301,18 @@
     }
 }
 
--(void)closeMenu:(BOOL)animated {
+- (void)closeMenu:(BOOL)animated {
+    if (isAnimating) {
+        return;
+    }
+    
+    // cancel previous animations
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
     _isMenuOpen = NO;
     if (animated) {
         isAnimating = YES;
-            // animate the buttons out first
+        // animate the buttons out first
         [_mainButton setSelected:NO];
         [UIView animateWithDuration:0.2 animations:^{
             for (UIButton *btn in _buttons) {
@@ -305,7 +320,7 @@
             }
         } completion:^(BOOL finished) {
             [_buttons makeObjectsPerformSelector:@selector(setHidden:) withObject:[NSNumber numberWithBool:YES]];
-                // now close the menu
+            // now close the menu
             [UIView animateWithDuration:kCloseAnimationTime animations:^{
                 _overlaysContainer.transform = CGAffineTransformMakeScale(0.0,0.0);
                 _blockerView.alpha = 0.0;
@@ -327,7 +342,7 @@
     }
 }
 
--(void)mainButtonTouched {
+- (void)mainButtonTouched {
     
     if (isAnimating) return;
     
@@ -338,29 +353,29 @@
     }
 }
 
--(void)menuButtonItemSelected:(UIButton*)button {
+- (void)menuButtonItemSelected:(UIButton*)button {
     if (_delegate && [_delegate respondsToSelector:@selector(circularMenu:didSelectMenuItemAtIndex:)]) {
         [_delegate circularMenu:self didSelectMenuItemAtIndex:[_buttons indexOfObject:button]];
     }
 }
 
-    // send the touch events to the app
+// send the touch events to the app
 - (UIView*)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     [super hitTest:point withEvent:event];
-    if (isAnimating) return nil;
+    if (isAnimating) {return self;}
     
-        // test if the touch is in main button
-    UIView *mainButtonMaybe = [_mainButton hitTest:[_mainButton convertPoint:point fromView:self] withEvent:event];
+    // test if the touch is in main button
+    UIView *mainButtonMaybe = [_mainButton hitTest:[self convertPoint:point toView:_mainButton] withEvent:event];
     if (mainButtonMaybe) {
         return mainButtonMaybe;
     }
     
-        // test if the touch is in the menu or buttons
+    // test if the touch is in the menu or buttons
     if (_isMenuOpen) {
         
-        UIView *menuOverlay = [_overlaysContainer hitTest:[_overlaysContainer convertPoint:point fromView:self] withEvent:event];
+        UIView *menuOverlay = [_overlaysContainer hitTest:[self convertPoint:point toView:_overlaysContainer] withEvent:event];
         if (menuOverlay) {
-                // the touh was inside the menu overlay, now check if was in any button
+            // the touh was inside the menu overlay, now check if was in any button
             __block UIView *hitView = menuOverlay;
             [_buttons enumerateObjectsUsingBlock:^(UIView *obj, NSUInteger idx, BOOL *stop) {
                 CGPoint thePoint = [self convertPoint:point toView:obj];
@@ -369,23 +384,18 @@
                     hitView = theSubHitView;
                     *stop = YES;
                 }
-                
             }];
             
             return hitView;
-        }
-    }
-    
-        // test if the touch is in blocker view
-    if (_isMenuOpen && _blockerView.superview) {
-        UIView *blockerView = [_blockerView hitTest:[_blockerView convertPoint:point fromView:self] withEvent:event];
-        if (blockerView) {
-                // close menu and don't send the touch to back views
+        }else {
+            // can only be in blocker view
+            // close the menu
             [self closeMenu:YES];
-            return blockerView;
+            return self;
         }
+        
     }else if ([_appWindow subviews].count>0) {
-            // send the touchs to the app root controller
+        // send the touchs to the app root controller
         UIView *appView = (UIView*)[[_appWindow subviews]objectAtIndex:0];
         return [appView hitTest:[appView convertPoint:point fromView:self]withEvent:event];
     }

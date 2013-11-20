@@ -7,16 +7,19 @@
 //
 
 #import "ASAppDelegate.h"
-#import "ASMainViewController.h"
+#import "ASRootViewController.h"
 
 @implementation ASAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    ASRootViewController *navController = [[ASRootViewController alloc] init];
+    [self.window setRootViewController:navController];
+
     [self.window makeKeyAndVisible];
 
-    self.window.rootViewController =  [[UINavigationController alloc]initWithRootViewController:[[ASMainViewController alloc] init]];
     return YES;
 }
 							

@@ -24,6 +24,7 @@
 
 @property (nonatomic,weak) IBOutlet id<ASCircularMenuDelegate> delegate;
 @property (nonatomic) BOOL isMenuOpen;
+@property (nonatomic) BOOL isMenuVisible;
 
 -(void)reloadButtons;
 
