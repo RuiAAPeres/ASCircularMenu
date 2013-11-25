@@ -46,7 +46,6 @@
 {
     if ((self = [super initWithCoder:aDecoder])) {
         [self initialize];
-        [self didMoveToWindow];
     }
     return self;
 }
